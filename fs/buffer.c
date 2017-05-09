@@ -19,7 +19,7 @@
  */
 
 #include <stdarg.h>
- 
+
 #include <linux/config.h>
 #include <linux/sched.h>
 #include <linux/kernel.h>
@@ -164,7 +164,7 @@ static inline void insert_into_queues(struct buffer_head * bh)
 }
 
 static struct buffer_head * find_buffer(int dev, int block)
-{		
+{
 	struct buffer_head * tmp;
 
 	for (tmp = hash(dev,block) ; tmp != NULL ; tmp = tmp->b_next)
@@ -284,8 +284,7 @@ struct buffer_head * bread(int dev,int block)
 __asm__("cld\n\t" \
 	"rep\n\t" \
 	"movsl\n\t" \
-	::"c" (BLOCK_SIZE/4),"S" (from),"D" (to) \
-	:"cx","di","si")
+	::"c" (BLOCK_SIZE/4),"S" (from),"D" (to));
 
 /*
  * bread_page reads four buffers into memory at the desired address. It's
@@ -378,4 +377,4 @@ void buffer_init(long buffer_end)
 	h->b_next_free = free_list;
 	for (i=0;i<NR_HASH;i++)
 		hash_table[i]=NULL;
-}	
+}

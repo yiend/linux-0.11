@@ -122,8 +122,7 @@ static void scrup(void)
 					::"a" (video_erase_char),
 					"c" ((video_num_lines-1)*video_num_columns>>1),
 					"D" (video_mem_start),
-					"S" (origin)
-					:"cx","di","si");
+					"S" (origin));
 				scr_end -= origin-video_mem_start;
 				pos -= origin-video_mem_start;
 				origin = video_mem_start;
@@ -133,8 +132,7 @@ static void scrup(void)
 					"stosw"
 					::"a" (video_erase_char),
 					"c" (video_num_columns),
-					"D" (scr_end-video_size_row)
-					:"cx","di");
+					"D" (scr_end-video_size_row));
 			}
 			set_origin();
 		} else {
@@ -147,8 +145,7 @@ static void scrup(void)
 				::"a" (video_erase_char),
 				"c" ((bottom-top-1)*video_num_columns>>1),
 				"D" (origin+video_size_row*top),
-				"S" (origin+video_size_row*(top+1))
-				:"cx","di","si");
+				"S" (origin+video_size_row*(top+1)));
 		}
 	}
 	else		/* Not EGA/VGA */
@@ -162,8 +159,7 @@ static void scrup(void)
 			::"a" (video_erase_char),
 			"c" ((bottom-top-1)*video_num_columns>>1),
 			"D" (origin+video_size_row*top),
-			"S" (origin+video_size_row*(top+1))
-			:"cx","di","si");
+			"S" (origin+video_size_row*(top+1)));
 	}
 }
 
@@ -181,8 +177,7 @@ static void scrdown(void)
 			::"a" (video_erase_char),
 			"c" ((bottom-top-1)*video_num_columns>>1),
 			"D" (origin+video_size_row*bottom-4),
-			"S" (origin+video_size_row*(bottom-1)-4)
-			:"ax","cx","di","si");
+			"S" (origin+video_size_row*(bottom-1)-4));
 	}
 	else		/* Not EGA/VGA */
 	{
@@ -196,8 +191,7 @@ static void scrdown(void)
 			::"a" (video_erase_char),
 			"c" ((bottom-top-1)*video_num_columns>>1),
 			"D" (origin+video_size_row*bottom-4),
-			"S" (origin+video_size_row*(bottom-1)-4)
-			:"ax","cx","di","si");
+			"S" (origin+video_size_row*(bottom-1)-4));
 	}
 }
 
@@ -261,8 +255,7 @@ static void csi_J(int par)
 		"rep\n\t"
 		"stosw\n\t"
 		::"c" (count),
-		"D" (start),"a" (video_erase_char)
-		:"cx","di");
+		"D" (start),"a" (video_erase_char));
 }
 
 static void csi_K(int par)
@@ -292,8 +285,7 @@ static void csi_K(int par)
 		"rep\n\t"
 		"stosw\n\t"
 		::"c" (count),
-		"D" (start),"a" (video_erase_char)
-		:"cx","di");
+		"D" (start),"a" (video_erase_char));
 }
 
 void csi_m(void)
@@ -460,8 +452,7 @@ void con_write(struct tty_struct * tty)
 					}
 					__asm__("movb _attr,%%ah\n\t"
 						"movw %%ax,%1\n\t"
-						::"a" (c),"m" (*(short *)pos)
-						:"ax");
+						::"a" (c),"m" (*(short *)pos));
 					pos += 2;
 					x++;
 				} else if (c==27)
@@ -625,7 +616,7 @@ void con_init(void)
 	video_num_lines = ORIG_VIDEO_LINES;
 	video_page = ORIG_VIDEO_PAGE;
 	video_erase_char = 0x0720;
-	
+
 	if (ORIG_VIDEO_MODE == 7)			/* Is this a monochrome display? */
 	{
 		video_mem_start = 0xb0000;
@@ -664,16 +655,16 @@ void con_init(void)
 	}
 
 	/* Let the user known what kind of display driver we are using */
-	
+
 	display_ptr = ((char *)video_mem_start) + video_size_row - 8;
 	while (*display_desc)
 	{
 		*display_ptr++ = *display_desc++;
 		display_ptr++;
 	}
-	
+
 	/* Initialize the variables used for scrolling (mostly EGA/VGA)	*/
-	
+
 	origin	= video_mem_start;
 	scr_end	= video_mem_start + video_num_lines * video_size_row;
 	top	= 0;
@@ -706,5 +697,5 @@ static void sysbeep(void)
 	outb_p(0x37, 0x42);
 	outb(0x06, 0x42);
 	/* 1/8 second */
-	beepcount = HZ/8;	
+	beepcount = HZ/8;
 }

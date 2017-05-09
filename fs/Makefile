@@ -1,9 +1,9 @@
-AR	=gar
-AS	=gas
-CC	=gcc
-LD	=gld
-CFLAGS	=-Wall -O -fstrength-reduce -fcombine-regs -fomit-frame-pointer \
-	-mstring-insns -nostdinc -I../include
+AR	=ar
+AS	=as --32
+CC	=cc -m32
+LD	=ld -m elf_i386
+CFLAGS	=-Wall -O -fno-builtin -fstrength-reduce -fomit-frame-pointer \
+	-nostdinc -I../include
 CPP	=gcc -E -nostdinc -I../include
 
 .c.s:
@@ -34,67 +34,67 @@ dep:
 ### Dependencies:
 bitmap.o : bitmap.c ../include/string.h ../include/linux/sched.h \
   ../include/linux/head.h ../include/linux/fs.h ../include/sys/types.h \
-  ../include/linux/mm.h ../include/signal.h ../include/linux/kernel.h 
+  ../include/linux/mm.h ../include/signal.h ../include/linux/kernel.h
 block_dev.o : block_dev.c ../include/errno.h ../include/linux/sched.h \
   ../include/linux/head.h ../include/linux/fs.h ../include/sys/types.h \
   ../include/linux/mm.h ../include/signal.h ../include/linux/kernel.h \
-  ../include/asm/segment.h ../include/asm/system.h 
+  ../include/asm/segment.h ../include/asm/system.h
 buffer.o : buffer.c ../include/stdarg.h ../include/linux/config.h \
   ../include/linux/sched.h ../include/linux/head.h ../include/linux/fs.h \
   ../include/sys/types.h ../include/linux/mm.h ../include/signal.h \
-  ../include/linux/kernel.h ../include/asm/system.h ../include/asm/io.h 
+  ../include/linux/kernel.h ../include/asm/system.h ../include/asm/io.h
 char_dev.o : char_dev.c ../include/errno.h ../include/sys/types.h \
   ../include/linux/sched.h ../include/linux/head.h ../include/linux/fs.h \
   ../include/linux/mm.h ../include/signal.h ../include/linux/kernel.h \
-  ../include/asm/segment.h ../include/asm/io.h 
+  ../include/asm/segment.h ../include/asm/io.h
 exec.o : exec.c ../include/errno.h ../include/string.h \
   ../include/sys/stat.h ../include/sys/types.h ../include/a.out.h \
   ../include/linux/fs.h ../include/linux/sched.h ../include/linux/head.h \
   ../include/linux/mm.h ../include/signal.h ../include/linux/kernel.h \
-  ../include/asm/segment.h 
+  ../include/asm/segment.h
 fcntl.o : fcntl.c ../include/string.h ../include/errno.h \
   ../include/linux/sched.h ../include/linux/head.h ../include/linux/fs.h \
   ../include/sys/types.h ../include/linux/mm.h ../include/signal.h \
   ../include/linux/kernel.h ../include/asm/segment.h ../include/fcntl.h \
-  ../include/sys/stat.h 
+  ../include/sys/stat.h
 file_dev.o : file_dev.c ../include/errno.h ../include/fcntl.h \
   ../include/sys/types.h ../include/linux/sched.h ../include/linux/head.h \
   ../include/linux/fs.h ../include/linux/mm.h ../include/signal.h \
-  ../include/linux/kernel.h ../include/asm/segment.h 
-file_table.o : file_table.c ../include/linux/fs.h ../include/sys/types.h 
+  ../include/linux/kernel.h ../include/asm/segment.h
+file_table.o : file_table.c ../include/linux/fs.h ../include/sys/types.h
 inode.o : inode.c ../include/string.h ../include/sys/stat.h \
   ../include/sys/types.h ../include/linux/sched.h ../include/linux/head.h \
   ../include/linux/fs.h ../include/linux/mm.h ../include/signal.h \
-  ../include/linux/kernel.h ../include/asm/system.h 
+  ../include/linux/kernel.h ../include/asm/system.h
 ioctl.o : ioctl.c ../include/string.h ../include/errno.h \
   ../include/sys/stat.h ../include/sys/types.h ../include/linux/sched.h \
   ../include/linux/head.h ../include/linux/fs.h ../include/linux/mm.h \
-  ../include/signal.h 
+  ../include/signal.h
 namei.o : namei.c ../include/linux/sched.h ../include/linux/head.h \
   ../include/linux/fs.h ../include/sys/types.h ../include/linux/mm.h \
   ../include/signal.h ../include/linux/kernel.h ../include/asm/segment.h \
   ../include/string.h ../include/fcntl.h ../include/errno.h \
-  ../include/const.h ../include/sys/stat.h 
+  ../include/const.h ../include/sys/stat.h
 open.o : open.c ../include/string.h ../include/errno.h ../include/fcntl.h \
   ../include/sys/types.h ../include/utime.h ../include/sys/stat.h \
   ../include/linux/sched.h ../include/linux/head.h ../include/linux/fs.h \
   ../include/linux/mm.h ../include/signal.h ../include/linux/tty.h \
-  ../include/termios.h ../include/linux/kernel.h ../include/asm/segment.h 
+  ../include/termios.h ../include/linux/kernel.h ../include/asm/segment.h
 pipe.o : pipe.c ../include/signal.h ../include/sys/types.h \
   ../include/linux/sched.h ../include/linux/head.h ../include/linux/fs.h \
-  ../include/linux/mm.h ../include/asm/segment.h 
+  ../include/linux/mm.h ../include/asm/segment.h
 read_write.o : read_write.c ../include/sys/stat.h ../include/sys/types.h \
   ../include/errno.h ../include/linux/kernel.h ../include/linux/sched.h \
   ../include/linux/head.h ../include/linux/fs.h ../include/linux/mm.h \
-  ../include/signal.h ../include/asm/segment.h 
+  ../include/signal.h ../include/asm/segment.h
 stat.o : stat.c ../include/errno.h ../include/sys/stat.h \
   ../include/sys/types.h ../include/linux/fs.h ../include/linux/sched.h \
   ../include/linux/head.h ../include/linux/mm.h ../include/signal.h \
-  ../include/linux/kernel.h ../include/asm/segment.h 
+  ../include/linux/kernel.h ../include/asm/segment.h
 super.o : super.c ../include/linux/config.h ../include/linux/sched.h \
   ../include/linux/head.h ../include/linux/fs.h ../include/sys/types.h \
   ../include/linux/mm.h ../include/signal.h ../include/linux/kernel.h \
-  ../include/asm/system.h ../include/errno.h ../include/sys/stat.h 
+  ../include/asm/system.h ../include/errno.h ../include/sys/stat.h
 truncate.o : truncate.c ../include/linux/sched.h ../include/linux/head.h \
   ../include/linux/fs.h ../include/sys/types.h ../include/linux/mm.h \
-  ../include/signal.h ../include/sys/stat.h 
+  ../include/signal.h ../include/sys/stat.h

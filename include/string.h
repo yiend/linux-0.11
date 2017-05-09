@@ -31,7 +31,7 @@ __asm__("cld\n"
 	"stosb\n\t"
 	"testb %%al,%%al\n\t"
 	"jne 1b"
-	::"S" (src),"D" (dest):"si","di","ax");
+	::"S" (src),"D" (dest):"ax");
 return dest;
 }
 
@@ -47,7 +47,7 @@ __asm__("cld\n"
 	"rep\n\t"
 	"stosb\n"
 	"2:"
-	::"S" (src),"D" (dest),"c" (count):"si","di","ax","cx");
+	::"S" (src),"D" (dest),"c" (count):"ax");
 return dest;
 }
 
@@ -61,7 +61,7 @@ __asm__("cld\n\t"
 	"stosb\n\t"
 	"testb %%al,%%al\n\t"
 	"jne 1b"
-	::"S" (src),"D" (dest),"a" (0),"c" (0xffffffff):"si","di","ax","cx");
+	::"S" (src),"D" (dest),"a" (0),"c" (0xffffffff));
 return dest;
 }
 
@@ -80,8 +80,7 @@ __asm__("cld\n\t"
 	"jne 1b\n"
 	"2:\txorl %2,%2\n\t"
 	"stosb"
-	::"S" (src),"D" (dest),"a" (0),"c" (0xffffffff),"g" (count)
-	:"si","di","ax","cx");
+	::"S" (src),"D" (dest),"a" (0),"c" (0xffffffff),"g" (count));
 return dest;
 }
 
@@ -100,7 +99,7 @@ __asm__("cld\n"
 	"jl 3f\n\t"
 	"negl %%eax\n"
 	"3:"
-	:"=a" (__res):"D" (cs),"S" (ct):"si","di");
+	:"=a" (__res):"D" (cs),"S" (ct));
 return __res;
 }
 
@@ -121,7 +120,7 @@ __asm__("cld\n"
 	"jl 4f\n\t"
 	"negl %%eax\n"
 	"4:"
-	:"=a" (__res):"D" (cs),"S" (ct),"c" (count):"si","di","cx");
+	:"=a" (__res):"D" (cs),"S" (ct),"c" (count));
 return __res;
 }
 
@@ -138,7 +137,7 @@ __asm__("cld\n\t"
 	"movl $1,%1\n"
 	"2:\tmovl %1,%0\n\t"
 	"decl %0"
-	:"=a" (__res):"S" (s),"0" (c):"si");
+	:"=a" (__res):"S" (s),"0" (c));
 return __res;
 }
 
@@ -154,7 +153,7 @@ __asm__("cld\n\t"
 	"decl %0\n"
 	"2:\ttestb %%al,%%al\n\t"
 	"jne 1b"
-	:"=d" (__res):"0" (0),"S" (s),"a" (c):"ax","si");
+	:"=d" (__res):"0" (0),"S" (s),"a" (c));
 return __res;
 }
 
@@ -178,7 +177,7 @@ __asm__("cld\n\t"
 	"je 1b\n"
 	"2:\tdecl %0"
 	:"=S" (__res):"a" (0),"c" (0xffffffff),"0" (cs),"g" (ct)
-	:"ax","cx","dx","di");
+	:"dx","di");
 return __res-cs;
 }
 
@@ -202,7 +201,7 @@ __asm__("cld\n\t"
 	"jne 1b\n"
 	"2:\tdecl %0"
 	:"=S" (__res):"a" (0),"c" (0xffffffff),"0" (cs),"g" (ct)
-	:"ax","cx","dx","di");
+	:"dx","di");
 return __res-cs;
 }
 
@@ -229,7 +228,7 @@ __asm__("cld\n\t"
 	"2:\txorl %0,%0\n"
 	"3:"
 	:"=S" (__res):"a" (0),"c" (0xffffffff),"0" (cs),"g" (ct)
-	:"ax","cx","dx","di");
+	:"dx","di");
 return __res;
 }
 
@@ -256,7 +255,7 @@ __asm__("cld\n\t" \
 	"xorl %%eax,%%eax\n\t"
 	"2:"
 	:"=a" (__res):"0" (0),"c" (0xffffffff),"S" (cs),"g" (ct)
-	:"cx","dx","di","si");
+	:"dx","di");
 return __res;
 }
 
@@ -338,8 +337,7 @@ return __res;
 __asm__("cld\n\t"
 	"rep\n\t"
 	"movsb"
-	::"c" (n),"S" (src),"D" (dest)
-	:"cx","si","di");
+	::"c" (n),"S" (src),"D" (dest));
 return dest;
 }
 
@@ -349,14 +347,12 @@ if (dest<src)
 __asm__("cld\n\t"
 	"rep\n\t"
 	"movsb"
-	::"c" (n),"S" (src),"D" (dest)
-	:"cx","si","di");
+	::"c" (n),"S" (src),"D" (dest));
 else
 __asm__("std\n\t"
 	"rep\n\t"
 	"movsb"
-	::"c" (n),"S" (src+n-1),"D" (dest+n-1)
-	:"cx","si","di");
+	::"c" (n),"S" (src+n-1),"D" (dest+n-1));
 return dest;
 }
 
@@ -371,8 +367,7 @@ __asm__("cld\n\t"
 	"jl 1f\n\t"
 	"negl %%eax\n"
 	"1:"
-	:"=a" (__res):"0" (0),"D" (cs),"S" (ct),"c" (count)
-	:"si","di","cx");
+	:"=a" (__res):"0" (0),"D" (cs),"S" (ct),"c" (count));
 return __res;
 }
 
@@ -387,8 +382,7 @@ __asm__("cld\n\t"
 	"je 1f\n\t"
 	"movl $1,%0\n"
 	"1:\tdecl %0"
-	:"=D" (__res):"a" (c),"D" (cs),"c" (count)
-	:"cx");
+	:"=D" (__res):"a" (c),"D" (cs),"c" (count));
 return __res;
 }
 
@@ -397,8 +391,7 @@ return __res;
 __asm__("cld\n\t"
 	"rep\n\t"
 	"stosb"
-	::"a" (c),"D" (s),"c" (count)
-	:"cx","di");
+	::"a" (c),"D" (s),"c" (count));
 return s;
 }
 

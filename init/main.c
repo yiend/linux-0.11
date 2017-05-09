@@ -20,10 +20,10 @@
  * won't be any messing with the stack from main(), but we define
  * some others too.
  */
-static inline _syscall0(int,fork)
-static inline _syscall0(int,pause)
-static inline _syscall1(int,setup,void *,BIOS)
-static inline _syscall0(int,sync)
+/*static*/ inline _syscall0(int,fork)
+/*static*/ inline _syscall0(int,pause)
+/*static*/ inline _syscall1(int,setup,void *,BIOS)
+/*static*/ inline _syscall0(int,sync)
 
 #include <linux/tty.h>
 #include <linux/sched.h>
@@ -113,7 +113,7 @@ void main(void)		/* This really IS void, no error here. */
 	memory_end &= 0xfffff000;
 	if (memory_end > 16*1024*1024)
 		memory_end = 16*1024*1024;
-	if (memory_end > 12*1024*1024) 
+	if (memory_end > 12*1024*1024)
 		buffer_memory_end = 4*1024*1024;
 	else if (memory_end > 6*1024*1024)
 		buffer_memory_end = 2*1024*1024;
