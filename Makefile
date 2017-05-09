@@ -6,9 +6,9 @@ RAMDISK = #-DRAMDISK=512
 
 AS	=as --32
 LD	=ld -m elf_i386
-LDFLAGS	=-s -x -M
+LDFLAGS	=-s -x -M -Ttext 0 -e startup_32
 CC	=gcc -m32 $(RAMDISK)
-CFLAGS	=-Wall -O -fno-builtin -fstrength-reduce -fomit-frame-pointer
+CFLAGS	=-Wall -O -fno-builtin -fno-stack-protector -fstrength-reduce -fomit-frame-pointer
 CPP	=cpp -nostdinc -Iinclude
 
 #
