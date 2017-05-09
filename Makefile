@@ -4,15 +4,11 @@
 #
 RAMDISK = #-DRAMDISK=512
 
-AS86	=as86 -0 -a
-LD86	=ld86 -0
-
-AS	=gas
-LD	=gld
+AS	=as --32
+LD	=ld -m elf_i386
 LDFLAGS	=-s -x -M
-CC	=gcc $(RAMDISK)
-CFLAGS	=-Wall -O -fstrength-reduce -fomit-frame-pointer \
--fcombine-regs -mstring-insns
+CC	=gcc -m32 $(RAMDISK)
+CFLAGS	=-Wall -O -fno-builtin -fstrength-reduce -fomit-frame-pointer
 CPP	=cpp -nostdinc -Iinclude
 
 #
@@ -82,12 +78,14 @@ lib/lib.a:
 	(cd lib; make)
 
 boot/setup: boot/setup.s
-	$(AS86) -o boot/setup.o boot/setup.s
-	$(LD86) -s -o boot/setup boot/setup.o
+	$(AS) -o boot/setup.o boot/setup.s
+	$(LD) -s -Ttext 0 -o boot/setup boot/setup.o
+	objcopy -R .comment -R .note -O binary boot/setup
 
 boot/bootsect:	boot/bootsect.s
-	$(AS86) -o boot/bootsect.o boot/bootsect.s
-	$(LD86) -s -o boot/bootsect boot/bootsect.o
+	$(AS) -o boot/bootsect.o boot/bootsect.s
+	$(LD) -s -Ttext 0 -o boot/bootsect boot/bootsect.o
+	objcopy -R .comment -R .note -O binary boot/bootsect
 
 tmp.s:	boot/bootsect.s tools/system
 	(echo -n "SYSSIZE = (";ls -l tools/system | grep system \
@@ -120,4 +118,4 @@ init/main.o : init/main.c include/unistd.h include/sys/stat.h \
   include/utime.h include/time.h include/linux/tty.h include/termios.h \
   include/linux/sched.h include/linux/head.h include/linux/fs.h \
   include/linux/mm.h include/signal.h include/asm/system.h include/asm/io.h \
-  include/stddef.h include/stdarg.h include/fcntl.h 
+  include/stddef.h include/stdarg.h include/fcntl.h

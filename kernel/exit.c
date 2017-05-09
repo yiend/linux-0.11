@@ -46,7 +46,7 @@ static inline int send_sig(long sig,struct task_struct * p,int priv)
 static void kill_session(void)
 {
 	struct task_struct **p = NR_TASKS + task;
-	
+
 	while (--p > &FIRST_TASK) {
 		if (*p && (*p)->session == current->session)
 			(*p)->signal |= 1<<(SIGHUP-1);
@@ -63,19 +63,19 @@ int sys_kill(int pid,int sig)
 	int err, retval = 0;
 
 	if (!pid) while (--p > &FIRST_TASK) {
-		if (*p && (*p)->pgrp == current->pid) 
-			if (err=send_sig(sig,*p,1))
+		if (*p && (*p)->pgrp == current->pid)
+			if ((err=send_sig(sig,*p,1)))
 				retval = err;
 	} else if (pid>0) while (--p > &FIRST_TASK) {
-		if (*p && (*p)->pid == pid) 
-			if (err=send_sig(sig,*p,0))
+		if (*p && (*p)->pid == pid)
+			if ((err=send_sig(sig,*p,0)))
 				retval = err;
 	} else if (pid == -1) while (--p > &FIRST_TASK)
-		if (err = send_sig(sig,*p,0))
+		if ((err = send_sig(sig,*p,0)))
 			retval = err;
 	else while (--p > &FIRST_TASK)
 		if (*p && (*p)->pgrp == -pid)
-			if (err = send_sig(sig,*p,0))
+			if ((err = send_sig(sig,*p,0)))
 				retval = err;
 	return retval;
 }
@@ -193,5 +193,3 @@ repeat:
 	}
 	return -ECHILD;
 }
-
-

@@ -174,7 +174,7 @@ __asm__("cmpl %%ecx,_current\n\t" \
 	"je 1f\n\t" \
 	"movw %%dx,%1\n\t" \
 	"xchgl %%ecx,_current\n\t" \
-	"ljmp %0\n\t" \
+	"ljmp *%0\n\t" \
 	"cmpl %%ecx,_last_task_used_math\n\t" \
 	"jne 1f\n\t" \
 	"clts\n" \
@@ -185,28 +185,32 @@ __asm__("cmpl %%ecx,_current\n\t" \
 
 #define PAGE_ALIGN(n) (((n)+0xfff)&0xfffff000)
 
-#define _set_base(addr,base) \
-__asm__("movw %%dx,%0\n\t" \
+#define _set_base(addr,base)  \
+__asm__ ("push %%edx\n\t" \
+	"movw %%dx,%0\n\t" \
 	"rorl $16,%%edx\n\t" \
 	"movb %%dl,%1\n\t" \
-	"movb %%dh,%2" \
+	"movb %%dh,%2\n\t" \
+	"pop %%edx" \
 	::"m" (*((addr)+2)), \
 	  "m" (*((addr)+4)), \
 	  "m" (*((addr)+7)), \
 	  "d" (base) \
-	:"dx")
+	)
 
 #define _set_limit(addr,limit) \
-__asm__("movw %%dx,%0\n\t" \
+__asm__ ("push %%edx\n\t" \
+	"movw %%dx,%0\n\t" \
 	"rorl $16,%%edx\n\t" \
 	"movb %1,%%dh\n\t" \
 	"andb $0xf0,%%dh\n\t" \
 	"orb %%dh,%%dl\n\t" \
-	"movb %%dl,%1" \
+	"movb %%dl,%1\n\t" \
+	"pop %%edx" \
 	::"m" (*(addr)), \
 	  "m" (*((addr)+6)), \
 	  "d" (limit) \
-	:"dx")
+	)
 
 #define set_base(ldt,base) _set_base( ((char *)&(ldt)) , base )
 #define set_limit(ldt,limit) _set_limit( ((char *)&(ldt)) , (limit-1)>>12 )

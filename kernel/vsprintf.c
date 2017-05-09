@@ -55,9 +55,10 @@ static char * number(char * str, int num, int base, int size, int precision
 	} else
 		sign=(type&PLUS) ? '+' : ((type&SPACE) ? ' ' : 0);
 	if (sign) size--;
-	if (type&SPECIAL)
+	if (type&SPECIAL) {
 		if (base==16) size -= 2;
 		else if (base==8) size--;
+	}
 	i=0;
 	if (num==0)
 		tmp[i++]='0';
@@ -70,13 +71,14 @@ static char * number(char * str, int num, int base, int size, int precision
 			*str++ = ' ';
 	if (sign)
 		*str++ = sign;
-	if (type&SPECIAL)
+	if (type&SPECIAL) {
 		if (base==8)
 			*str++ = '0';
 		else if (base==16) {
 			*str++ = '0';
 			*str++ = digits[33];
 		}
+	}
 	if (!(type&LEFT))
 		while(size-->0)
 			*str++ = c;
@@ -109,7 +111,7 @@ int vsprintf(char *buf, const char *fmt, va_list args)
 			*str++ = *fmt;
 			continue;
 		}
-			
+
 		/* process flags */
 		flags = 0;
 		repeat:
@@ -121,7 +123,7 @@ int vsprintf(char *buf, const char *fmt, va_list args)
 				case '#': flags |= SPECIAL; goto repeat;
 				case '0': flags |= ZEROPAD; goto repeat;
 				}
-		
+
 		/* get field width */
 		field_width = -1;
 		if (is_digit(*fmt))
@@ -138,7 +140,7 @@ int vsprintf(char *buf, const char *fmt, va_list args)
 		/* get the precision */
 		precision = -1;
 		if (*fmt == '.') {
-			++fmt;	
+			++fmt;
 			if (is_digit(*fmt))
 				precision = skip_atoi(&fmt);
 			else if (*fmt == '*') {
