@@ -8,15 +8,19 @@ AS	=as --32
 LD	=ld -m elf_i386
 LDFLAGS	=-s -x -M -Ttext 0 -e startup_32
 CC	=gcc -m32 $(RAMDISK)
-CFLAGS	=-Wall -O -fno-builtin -fno-stack-protector -fstrength-reduce -fomit-frame-pointer
+CFLAGS	=-Wall -fno-builtin -fno-stack-protector -fstrength-reduce -fomit-frame-pointer
 CPP	=cpp -nostdinc -Iinclude
+
+OBJCOPY=objcopy
+STRIP=strip
+BUILD=tools/build.sh
 
 #
 # ROOT_DEV specifies the default root-device when making the image.
 # This can be either FLOPPY, /dev/xxxx or empty, in which case the
 # default of /dev/hd6 is used by 'build'.
 #
-ROOT_DEV=/dev/hd6
+ROOT_DEV=FLOPPY
 
 ARCHIVES=kernel/kernel.o mm/mm.o fs/fs.o
 DRIVERS =kernel/blk_drv/blk_drv.a kernel/chr_drv/chr_drv.a
@@ -34,9 +38,17 @@ LIBS	=lib/lib.a
 
 all:	Image
 
-Image: boot/bootsect boot/setup tools/system tools/build
-	tools/build boot/bootsect boot/setup tools/system $(ROOT_DEV) > Image
+Image: boot/bootsect boot/setup tools/system
+	cp -f tools/system tools/system.tmp
+	$(STRIP) tools/system.tmp
+	$(OBJCOPY) -O binary -R .note -R .comment tools/system.tmp
+	$(BUILD) boot/bootsect boot/setup tools/system.tmp tools/Image
+	rm tools/system.tmp
 	sync
+
+#Image: boot/bootsect boot/setup tools/system tools/build
+#	tools/build boot/bootsect boot/setup tools/system $(ROOT_DEV) > Image
+#	sync
 
 disk: Image
 	dd bs=8192 if=Image of=/dev/PS0

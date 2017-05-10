@@ -26,6 +26,9 @@
 #include <asm/system.h>
 #include <asm/io.h>
 
+#define MAJOR(dev) ((int)(((unsigned int) (dev) >> 8) & 0xff))
+#define MINOR(dev) ((int)((dev) & 0xff))
+
 extern int end;
 struct buffer_head * start_buffer = (struct buffer_head *) &end;
 struct buffer_head * hash_table[NR_HASH];
@@ -81,7 +84,7 @@ int sync_dev(int dev)
 	return 0;
 }
 
-void inline invalidate_buffers(int dev)
+static inline void invalidate_buffers(int dev)
 {
 	int i;
 	struct buffer_head * bh;
