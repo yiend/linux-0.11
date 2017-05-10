@@ -1,0 +1,11 @@
+*.o
+*.a
+.gdb*
+.ycm_extra_conf.py
+
+images/
+boot/bootsect
+boot/setup
+tools/system
+System.map
+kernel/chr_drv/keyboard.s

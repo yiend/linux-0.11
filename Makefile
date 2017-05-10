@@ -42,7 +42,7 @@ Image: boot/bootsect boot/setup tools/system
 	cp -f tools/system tools/system.tmp
 	$(STRIP) tools/system.tmp
 	$(OBJCOPY) -O binary -R .note -R .comment tools/system.tmp
-	$(BUILD) boot/bootsect boot/setup tools/system.tmp tools/Image
+	$(BUILD) boot/bootsect boot/setup tools/system.tmp images/Image
 	rm tools/system.tmp
 	sync
 
