@@ -2,6 +2,7 @@
 *.a
 .gdb*
 .ycm_extra_conf.py
+TAGS
 
 images/
 boot/bootsect
