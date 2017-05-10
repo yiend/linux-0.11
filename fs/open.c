@@ -64,7 +64,7 @@ int sys_access(const char * filename,int mode)
 	 * XXX we are doing this test last because we really should be
 	 * swapping the effective with the real user id (temporarily),
 	 * and then calling suser() routine.  If we do call the
-	 * suser() routine, it needs to be called last. 
+	 * suser() routine, it needs to be called last.
 	 */
 	if ((!current->uid) &&
 	    (!(mode & 1) || (i_mode & 0111)))
@@ -160,19 +160,21 @@ int sys_open(const char * filename,int flag,int mode)
 		return i;
 	}
 /* ttys are somewhat special (ttyxx major==4, tty major==5) */
-	if (S_ISCHR(inode->i_mode))
+	if (S_ISCHR(inode->i_mode)) {
 		if (MAJOR(inode->i_zone[0])==4) {
 			if (current->leader && current->tty<0) {
 				current->tty = MINOR(inode->i_zone[0]);
 				tty_table[current->tty].pgrp = current->pgrp;
 			}
-		} else if (MAJOR(inode->i_zone[0])==5)
+		} else if (MAJOR(inode->i_zone[0])==5) {
 			if (current->tty<0) {
 				iput(inode);
 				current->filp[fd]=NULL;
 				f->f_count=0;
 				return -EPERM;
 			}
+		}
+	}
 /* Likewise with block-devices: check for floppy_change */
 	if (S_ISBLK(inode->i_mode))
 		check_disk_change(inode->i_zone[0]);
@@ -190,7 +192,7 @@ int sys_creat(const char * pathname, int mode)
 }
 
 int sys_close(unsigned int fd)
-{	
+{
 	struct file * filp;
 
 	if (fd >= NR_OPEN)

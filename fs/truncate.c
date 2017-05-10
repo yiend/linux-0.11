@@ -16,7 +16,7 @@ static void free_ind(int dev,int block)
 
 	if (!block)
 		return;
-	if (bh=bread(dev,block)) {
+	if ((bh=bread(dev,block))) {
 		p = (unsigned short *) bh->b_data;
 		for (i=0;i<512;i++,p++)
 			if (*p)
@@ -34,7 +34,7 @@ static void free_dind(int dev,int block)
 
 	if (!block)
 		return;
-	if (bh=bread(dev,block)) {
+	if ((bh=bread(dev,block))) {
 		p = (unsigned short *) bh->b_data;
 		for (i=0;i<512;i++,p++)
 			if (*p)
@@ -62,4 +62,3 @@ void truncate(struct m_inode * inode)
 	inode->i_dirt = 1;
 	inode->i_mtime = inode->i_ctime = CURRENT_TIME;
 }
-
