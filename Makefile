@@ -92,12 +92,12 @@ lib/lib.a:
 boot/setup: boot/setup.s
 	$(AS) -o boot/setup.o boot/setup.s
 	$(LD) -s -Ttext 0 -o boot/setup boot/setup.o
-	objcopy -R .comment -R .note -O binary boot/setup
+	$(OBJCOPY) -R .comment -R .note -O binary boot/setup
 
 boot/bootsect:	boot/bootsect.s
 	$(AS) -o boot/bootsect.o boot/bootsect.s
 	$(LD) -s -Ttext 0 -o boot/bootsect boot/bootsect.o
-	objcopy -R .comment -R .note -O binary boot/bootsect
+	$(OBJCOPY) -R .comment -R .note -O binary boot/bootsect
 
 tmp.s:	boot/bootsect.s tools/system
 	(echo -n "SYSSIZE = (";ls -l tools/system | grep system \
