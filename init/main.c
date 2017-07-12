@@ -20,7 +20,9 @@
  * won't be any messing with the stack from main(), but we define
  * some others too.
  */
-_syscall0(int,fork)
+
+inline int fork(void) __attribute__((always_inline));
+inline _syscall0(int,fork)
 _syscall0(int,pause)
 _syscall1(int,setup,void *,BIOS)
 _syscall0(int,sync)
