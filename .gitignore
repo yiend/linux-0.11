@@ -1,9 +1,11 @@
 *.o
 *.a
 .ycm_extra_conf.py
+.gdb_history
 GTAGS
 GRTAGS
 GPATH
+kernel/chr_drv/keyboard.s
 
 images/
 boot/bootsect

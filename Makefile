@@ -4,7 +4,7 @@
 #
 RAMDISK = #-DRAMDISK=512
 
-AS	=as --32
+AS	=as --32 -g
 LD	=ld -m elf_i386
 LDFLAGS	=-Ttext 0 -e startup_32
 CC	=gcc -m32 $(RAMDISK)
